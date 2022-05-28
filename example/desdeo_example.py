@@ -79,7 +79,7 @@ while evolver.continue_evolution():
 # solutions: points in objective space that approximate Parto front
 individuals, solutions, _ = evolver.end()
 
-pd.DataFrame(solutions).to_csv("../ParetoFront.csv")
+pd.DataFrame(solutions).to_csv("../data/ParetoFront.csv")
 import matplotlib.pyplot as plt
 
 # Add a random sample to the plot
@@ -131,7 +131,7 @@ for i in range(1000):
 for i in range(1001,1000+len(d2)):
     labels[i]='1'
 
-data = pd.read_csv(r'../ParetoFront.csv', sep=',')
+data = pd.read_csv(r'../data/ParetoFront.csv', sep=',')
 df = pd.DataFrame([labels,F1,-F2,X1,X2],["Label", "F1", "F2", "X1", "X2"])
 dft=df.transpose()
 print(dft)
