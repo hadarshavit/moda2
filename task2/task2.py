@@ -2,8 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from numpy import asarray
 from numpy.random import rand
+import pandas as pd
 
-all_bests = []
+all_bests = {}
 for i in range(11):
     w1 = i / 10.0
     w2 = 1 - i / 10.0
@@ -53,7 +54,7 @@ for i in range(11):
     init = [2.4, 2.0]
 
     best, score, points, scores, = local_hillclimber(objective, bounds, n_iterations, step_size, init)
-    all_bests.append(best)
+    all_bests[f'{round(w1,2)}_{round(w2,2)}'] = {'f1':best[0], 'f2':best[1], 'score':score}
 
     n, m = 7, 7
     start = -3
@@ -81,4 +82,8 @@ for i in range(11):
     for i in range(n_iterations):
         plt.plot(points[i][0], points[i][1], "o")
     plt.savefig(f'pareto{round(w1,2)}_{round(w2,2)}.png')
+
+
 print('all', all_bests)
+# print(pd.DataFrame.from_dict(all_bests, orient='index').to_latex())
+
