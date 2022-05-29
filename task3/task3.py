@@ -1,16 +1,15 @@
 # # Basics of desdeo-emo
+from numpy import random
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
-import plotly.express as px
-import plotly.graph_objects as go
-import plotly.graph_objects as go
 # from desdeo_problem.testproblems.TestProblems import test_problem_builder
 from desdeo_emo.EAs import NSGAIII
 from desdeo_problem import variable_builder, ScalarObjective, MOProblem
+
+
 # from sklearn.datasets import load_iris, load_boston, load_wine
-from sklearn.preprocessing import MinMaxScaler
 
 
 # Define Objective function
@@ -26,7 +25,8 @@ def f_2(x):
     r1 = x[:, 0]
     r2 = x[:, 1]
     h = x[:, 2]
-    surface = np.pi * h * (3 * (r1 + r2) - np.sqrt((3 * r1 + r2) * (r1 + 3 * r2))) + 2 * np.pi * r1 * r2
+    surface = np.pi * h * \
+        (3 * (r1 + r2) - np.sqrt((3 * r1 + r2) * (r1 + 3 * r2))) + 2 * np.pi * r1 * r2
     # volume_icecreamcone = 1.0 / 3.0 * (np.pi) * r ** 2 * h
     # volume_filled_icecreamcone=1.0 /3.0 * (np.pi) * r**2 * h + 0*1/2*4.0 / 3.0 *np.pi *r**3
     return -surface
@@ -38,7 +38,8 @@ def f_2(x):
 #    return term1 + term2 - 13
 
 
-# Note that the expected input `x` is two dimensional. It should be a 2-D numpy array.
+# Note that the expected input `x` is two dimensional. It should be a 2-D
+# numpy array.
 
 # ## Create Variable objects
 
@@ -78,15 +79,13 @@ while evolver.continue_evolution():
 individuals, solutions, _ = evolver.end()
 
 pd.DataFrame(solutions).to_csv("data/ParetoFront.csv")
-import matplotlib.pyplot as plt
 
 # Add a random sample to the plot
-from numpy import random
 
 r1 = random.rand(1000, 1) * (10.0)
 r2 = random.rand(1000, 1) * (10.0)
 h = random.rand(1000, 1) * (10.0)
-Z = [];
+Z = []
 
 len_data = 1000 + len(solutions)
 labels = np.zeros(len_data)
@@ -136,7 +135,8 @@ for i in range(1001, 1000 + len(d2)):
     labels[i] = '1'
 
 data = pd.read_csv(r'data/ParetoFront.csv', sep=',')
-df = pd.DataFrame([labels, F1, -F2, X1, X2, X3], ["Label", "F1", "F2", "R1", "R2", "H"])
+df = pd.DataFrame([labels, F1, -F2, X1, X2, X3],
+                  ["Label", "F1", "F2", "R1", "R2", "H"])
 dft = df.transpose()
 print(dft)
 
@@ -145,6 +145,9 @@ plt.savefig('task3/par.png')
 
 cols = ["Label", "F1", "F2", "R1", "R2", "H"]
 
-fig = px.parallel_coordinates(dft, color="Label", dimensions=cols,
-                              title="Geomertrical Shape Pareto Parallel Coorinates Plot")
+fig = px.parallel_coordinates(
+    dft,
+    color="Label",
+    dimensions=cols,
+    title="Geomertrical Shape Pareto Parallel Coorinates Plot")
 fig.write_image('task3/par2.png')
