@@ -140,7 +140,7 @@ df = pd.DataFrame([labels, F1, -F2, X1, X2, X3],
 df.to_csv('data/AllData.csv')
 dft = df.transpose()
 print(dft)
-
+dft.to_csv('data/AllDataT.csv')
 pd.plotting.parallel_coordinates(dft, 'Label', color=["lime", "tomato"])
 plt.savefig('task3/par.png')
 
