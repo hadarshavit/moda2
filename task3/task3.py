@@ -101,13 +101,18 @@ for i in range(1000):
 
 plt.scatter(-F1randomsample,F2randomsample)
 plt.scatter(-solutions[:,0],solutions[:,1])
+plt.xlabel('Volume')
+plt.ylabel('Surface')
 plt.savefig('task3/pareto_front.png')
 plt.clf()
 # # Scatterplot X1, X2
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.scatter(r1, r2, h)
-ax.scatter(individuals[:,0],individuals[:,1], individuals[:,2])
+ax.scatter(individuals[:,0], individuals[:,1],  individuals[:,2])
+ax.set_xlabel('r1')
+ax.set_ylabel('r2')
+ax.set_zlabel('r3')
 plt.savefig('task3/efficient_set.png')
 
 s1 = solutions[:, 0]
