@@ -137,6 +137,7 @@ for i in range(1001, 1000 + len(d2)):
 data = pd.read_csv(r'data/ParetoFront.csv', sep=',')
 df = pd.DataFrame([labels, F1, -F2, X1, X2, X3],
                   ["Label", "F1", "F2", "R1", "R2", "H"])
+df.to_csv('data/AllData.csv')
 dft = df.transpose()
 print(dft)
 
