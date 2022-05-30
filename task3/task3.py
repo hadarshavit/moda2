@@ -111,23 +111,23 @@ for i in range(1000):
 
 s1 = solutions[:, 0]
 F1 = np.concatenate((F1randomsample, s1))
-F1 = F1 / np.max(F1)
+# F1 = F1 / np.max(F1)
 
 s2 = solutions[:, 1]
 F2 = np.concatenate((F2randomsample, s2))
-F2 = F2 / np.max(-F2)
+# F2 = F2 / np.max(-F2)
 
 d1 = individuals[:, 0]
 X1 = np.concatenate((r1.flatten(), d1))
-X1 = X1 / np.max(X1)
+# X1 = X1 / np.max(X1)
 
 d2 = individuals[:, 1]
 X2 = np.concatenate((r2.flatten(), d2))
-X2 = X2 / np.max(X2)
+# X2 = X2 / np.max(X2)
 
 d3 = individuals[:, 2]
 X3 = np.concatenate((h.flatten(), d3))
-X3 = X3 / np.max(X3)
+# X3 = X3 / np.max(X3)
 
 for i in range(1000):
     labels[i] = '0'
