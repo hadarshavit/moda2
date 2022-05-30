@@ -13,13 +13,14 @@ f1s = []
 f2s = []
 
 plot_all_trajectories = False
-for i in range(1001):
-    w1 = i / 1000.0
-    w2 = 1 - i / 1000.0
+num_points = 10 if plot_all_trajectories else 1000
+for i in range(num_points + 1):
+    w1 = i / num_points
+    w2 = 1 - i / num_points
 
-    def objective(x):
-        f1 = 0.5 * np.power(x[0], 2) * x[1]
-        f2 = np.power(x[0], 2) + 3 * x[0] * x[1]
+    def objective(x0, x1):
+        f1 = 0.5 * np.power(x0, 2) * x1
+        f2 = np.power(x0, 2) + 3 * x0 * x1
         r1 = 0
         r2 = 250
         return np.maximum(w1 * np.abs(f1 - r1), w2 * np.abs(f2 - r2))
@@ -29,7 +30,7 @@ for i in range(1001):
         # generate an initial point
         best = init
         # evaluate the initial point
-        best_eval = objective(best)
+        best_eval = objective(best[0], best[1])
         curr, curr_eval = best, best_eval  # current working solution
         scores = list()
         points = list()
@@ -38,19 +39,13 @@ for i in range(1001):
             # candidate = [curr[0] + rand() * step_size[0] - step_size[0] / 2.0,
                         #  curr[1] + rand() * step_size[1] - step_size[1] / 2.0]
             candidate = [np.random.uniform(max(bounds[0, 0], curr[0] - step_size[0]), min(bounds[0, 1], curr[0] + step_size[0])),
-                        random.uniform(max(bounds[1, 0], curr[1] - step_size[1]), min(bounds[1, 1], curr[1] + step_size[1])) ]
-            # print(candidate)
-            if candidate[0] > bounds[0, 1]:
-                candidate[0] = curr[0]
-                print('gg')
-            if candidate[1] > bounds[1, 1]:
-                candidate[1] = curr[1]
-                print('dsa')
+                        random.uniform(max(bounds[1, 0], curr[1] - step_size[1]), min(bounds[1, 1], curr[1] + step_size[1]))]
+
             points.append(candidate)
             # print('>%d f(%s) = %.5f, %s' % (i, best, best_eval, candidate))
             # evaluate candidate point
             # check for new best solution
-            candidate_eval = objective(candidate)
+            candidate_eval = objective(candidate[0], candidate[1])
             if candidate_eval < best_eval:  # store new best point
                 best, best_eval = candidate, candidate_eval
                 # keep track of scores
@@ -60,9 +55,9 @@ for i in range(1001):
         return [best, best_eval, points, scores]
 
     bounds = asarray([[0, 5], [0, 10]])
-    step_size = [0.4, 0.4]
+    step_size = asarray([0.4, 0.4])
     n_iterations = 10000
-    init = [2.4, 2.0]
+    init = asarray([np.random.uniform(bounds[0, 0], bounds[0, 1]), np.random.uniform(bounds[1, 0], bounds[1, 1])])
 
     best, score, points, scores, = local_hillclimber(objective, bounds, n_iterations, step_size, init)
     all_bests[f'{round(w1,2)}_{round(w2,2)}'] = {'f1':best[0], 'f2':best[1], 'score':score}
@@ -86,7 +81,7 @@ for i in range(1001):
         ax = fig.add_axes([left, bottom, width, height])
         # Z = 0.1 * np.abs((0.5 * np.power(X, 2) * Y)) +
         # 0.9 * np.abs((np.power(X, 2) + 3 * X * Y) - 250)
-        Z = objective([X, Y])
+        Z = objective(X, Y)
         # print(Z)
 
         cp = ax.contour(X, Y, Z)
