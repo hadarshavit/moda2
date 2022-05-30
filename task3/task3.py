@@ -54,8 +54,8 @@ list_vars = variable_builder(['r1', 'r2', 'h'],
 # ## Create Objective objects
 
 
-f1 = ScalarObjective(name='f1', evaluator=f_1)
-f2 = ScalarObjective(name='f2', evaluator=f_2)
+f1 = ScalarObjective(name='f1', evaluator=f_1, lower_bound=0)
+f2 = ScalarObjective(name='f2', evaluator=f_2, upper_bound=0)
 list_objs = [f1, f2]
 
 # ## Create the problem object
@@ -79,7 +79,7 @@ while evolver.continue_evolution():
 individuals, solutions, _ = evolver.end()
 
 pd.DataFrame(solutions).to_csv("data/ParetoFront.csv")
-
+pd.DataFrame(individuals).to_csv("data/EfficientSet.csv")
 # Add a random sample to the plot
 
 r1 = random.rand(1000, 1) * (10.0)
@@ -97,7 +97,7 @@ randomsample = np.hstack((r1, r2, h))  # matrix 1000x2
 for i in range(1000):
     F1randomsample = f_1(randomsample)
     F2randomsample = f_2(randomsample)
-print(randomsample)
+# print(randomsample)
 
 # plt.scatter(F1randomsample,-F2randomsample)
 # plt.scatter(solutions[:,0],-solutions[:,1])
