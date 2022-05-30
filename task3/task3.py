@@ -99,15 +99,16 @@ for i in range(1000):
     F2randomsample = f_2(randomsample)
 # print(randomsample)
 
-# plt.scatter(F1randomsample,-F2randomsample)
-# plt.scatter(solutions[:,0],-solutions[:,1])
-# plt.show()
-
+plt.scatter(-F1randomsample,F2randomsample)
+plt.scatter(-solutions[:,0],solutions[:,1])
+plt.savefig('task3/pareto_front.png')
+plt.clf()
 # # Scatterplot X1, X2
-
-# plt.scatter(X,Y)
-# plt.scatter(individuals[:,0],individuals[:,1])
-# plt.show()
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.scatter(r1, r2, h)
+ax.scatter(individuals[:,0],individuals[:,1], individuals[:,2])
+plt.savefig('task3/efficient_set.png')
 
 s1 = solutions[:, 0]
 F1 = np.concatenate((F1randomsample, s1))
