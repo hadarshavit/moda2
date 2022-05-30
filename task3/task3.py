@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import plotly.express as px
-# from desdeo_problem.testproblems.TestProblems import test_problem_builder
+from desdeo_problem.testproblems.TestProblems import test_problem_builder
 from desdeo_emo.EAs import NSGAIII
 from desdeo_problem import variable_builder, ScalarObjective, MOProblem
 
@@ -18,7 +18,7 @@ def f_1(x):
     r2 = x[:, 1]
     h = x[:, 2]
     volume = np.pi * h * r1 * r2
-    return volume
+    return -volume
 
 
 def f_2(x):
@@ -29,7 +29,7 @@ def f_2(x):
         (3 * (r1 + r2) - np.sqrt((3 * r1 + r2) * (r1 + 3 * r2))) + 2 * np.pi * r1 * r2
     # volume_icecreamcone = 1.0 / 3.0 * (np.pi) * r ** 2 * h
     # volume_filled_icecreamcone=1.0 /3.0 * (np.pi) * r**2 * h + 0*1/2*4.0 / 3.0 *np.pi *r**3
-    return -surface
+    return surface
 
 
 # def f_3(x):
@@ -54,8 +54,8 @@ list_vars = variable_builder(['r1', 'r2', 'h'],
 # ## Create Objective objects
 
 
-f1 = ScalarObjective(name='f1', evaluator=f_1, lower_bound=0)
-f2 = ScalarObjective(name='f2', evaluator=f_2, upper_bound=0)
+f1 = ScalarObjective(name='f1', evaluator=f_1, upper_bound=0)
+f2 = ScalarObjective(name='f2', evaluator=f_2, lower_bound=0)
 list_objs = [f1, f2]
 
 # ## Create the problem object
@@ -135,7 +135,7 @@ for i in range(1001, 1000 + len(d2)):
     labels[i] = '1'
 
 data = pd.read_csv(r'data/ParetoFront.csv', sep=',')
-df = pd.DataFrame([labels, F1, -F2, X1, X2, X3],
+df = pd.DataFrame([labels, -F1, F2, X1, X2, X3],
                   ["Label", "F1", "F2", "R1", "R2", "H"])
 df.to_csv('data/AllData.csv')
 dft = df.transpose()
@@ -146,9 +146,9 @@ plt.savefig('task3/par.png')
 
 cols = ["Label", "F1", "F2", "R1", "R2", "H"]
 
-fig = px.parallel_coordinates(
-    dft,
-    color="Label",
-    dimensions=cols,
-    title="Geomertrical Shape Pareto Parallel Coorinates Plot")
-fig.write_image('task3/par2.png')
+# fig = px.parallel_coordinates(
+#     dft,
+#     color="Label",
+#     dimensions=cols,
+#     title="Geomertrical Shape Pareto Parallel Coorinates Plot")
+# fig.write_image('task3/par2.png')
