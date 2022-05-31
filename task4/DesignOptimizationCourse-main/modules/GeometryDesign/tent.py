@@ -64,7 +64,7 @@ class Tent:
         ax.set_xlim(0,1)
         ax.set_ylim(0,1)
         ax.set_zlim(0,1)
-        plt.show()
+        # plt.show(block=False)
 
     def make_floor(self):
         temp = remove_xy_duplicates_w_lowest_z(self._point_cloud) # If duplicates within x,y axis get the ones with lowest z
