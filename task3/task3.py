@@ -1,12 +1,10 @@
 # # Basics of desdeo-emo
-from numpy import random
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import plotly.express as px
-from desdeo_problem.testproblems.TestProblems import test_problem_builder
 from desdeo_emo.EAs import NSGAIII
 from desdeo_problem import variable_builder, ScalarObjective, MOProblem
+from numpy import random
 
 
 # from sklearn.datasets import load_iris, load_boston, load_wine
@@ -26,7 +24,7 @@ def f_2(x):
     r2 = x[:, 1]
     h = x[:, 2]
     surface = np.pi * h * \
-        (3 * (r1 + r2) - np.sqrt((3 * r1 + r2) * (r1 + 3 * r2))) + 2 * np.pi * r1 * r2
+              (3 * (r1 + r2) - np.sqrt((3 * r1 + r2) * (r1 + 3 * r2))) + 2 * np.pi * r1 * r2
     # volume_icecreamcone = 1.0 / 3.0 * (np.pi) * r ** 2 * h
     # volume_filled_icecreamcone=1.0 /3.0 * (np.pi) * r**2 * h + 0*1/2*4.0 / 3.0 *np.pi *r**3
     return surface
@@ -99,21 +97,21 @@ for i in range(1000):
     F2randomsample = f_2(randomsample)
 # print(randomsample)
 
-plt.scatter(-F1randomsample,F2randomsample)
-plt.scatter(-solutions[:,0],solutions[:,1])
+plt.scatter(-F1randomsample, F2randomsample)
+plt.scatter(-solutions[:, 0], solutions[:, 1])
 plt.xlabel('Volume')
 plt.ylabel('Surface')
-plt.savefig('task3/pareto_front.png')
+plt.savefig('pareto_front.png')
 plt.clf()
 # # Scatterplot X1, X2
 fig = plt.figure()
 ax = fig.add_subplot(projection='3d')
 ax.scatter(r1, r2, h)
-ax.scatter(individuals[:,0], individuals[:,1],  individuals[:,2])
+ax.scatter(individuals[:, 0], individuals[:, 1], individuals[:, 2])
 ax.set_xlabel('r1')
 ax.set_ylabel('r2')
 ax.set_zlabel('r3')
-plt.savefig('task3/efficient_set.png')
+plt.savefig('efficient_set.png')
 
 s1 = solutions[:, 0]
 F1 = np.concatenate((F1randomsample, s1))
@@ -148,7 +146,7 @@ dft = df.transpose()
 print(dft)
 dft.to_csv('data/AllDataT.csv')
 pd.plotting.parallel_coordinates(dft, 'Label', color=["lime", "tomato"])
-plt.savefig('task3/par.png')
+plt.savefig('par.png')
 
 cols = ["Label", "F1", "F2", "R1", "R2", "H"]
 

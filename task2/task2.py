@@ -1,10 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy import asarray
-from numpy.random import rand
 import pandas as pd
 from numpy import random
-
+from tqdm import tqdm
 
 all_bests = {}
 x0s = []
@@ -14,9 +13,10 @@ f2s = []
 
 plot_all_trajectories = False
 num_points = 10 if plot_all_trajectories else 1000
-for i in range(num_points + 1):
+for i in tqdm(range(num_points + 1)):
     w1 = i / num_points
     w2 = 1 - i / num_points
+
 
     def objective(x0, x1):
         f1 = 0.5 * np.power(x0, 2) * x1
@@ -25,7 +25,9 @@ for i in range(num_points + 1):
         r2 = 250
         return np.maximum(w1 * np.abs(f1 - r1), w2 * np.abs(f2 - r2))
 
+
     # black-box optimization software
+
     def local_hillclimber(objective, bounds, n_iterations, step_size, init):
         # generate an initial point
         best = init
@@ -35,11 +37,12 @@ for i in range(num_points + 1):
         scores = list()
         points = list()
         for i in range(n_iterations):  # take a step
-            
+
             # candidate = [curr[0] + rand() * step_size[0] - step_size[0] / 2.0,
-                        #  curr[1] + rand() * step_size[1] - step_size[1] / 2.0]
-            candidate = [np.random.uniform(max(bounds[0, 0], curr[0] - step_size[0]), min(bounds[0, 1], curr[0] + step_size[0])),
-                        random.uniform(max(bounds[1, 0], curr[1] - step_size[1]), min(bounds[1, 1], curr[1] + step_size[1]))]
+            #  curr[1] + rand() * step_size[1] - step_size[1] / 2.0]
+            candidate = [
+                np.random.uniform(max(bounds[0, 0], curr[0] - step_size[0]), min(bounds[0, 1], curr[0] + step_size[0])),
+                random.uniform(max(bounds[1, 0], curr[1] - step_size[1]), min(bounds[1, 1], curr[1] + step_size[1]))]
 
             points.append(candidate)
             # print('>%d f(%s) = %.5f, %s' % (i, best, best_eval, candidate))
@@ -54,13 +57,17 @@ for i in range(num_points + 1):
                 curr = candidate
         return [best, best_eval, points, scores]
 
+
     bounds = asarray([[0, 5], [0, 10]])
     step_size = asarray([0.4, 0.4])
     n_iterations = 10000
-    init = asarray([np.random.uniform(bounds[0, 0], bounds[0, 1]), np.random.uniform(bounds[1, 0], bounds[1, 1])])
+    init = asarray([np.random.uniform(bounds[0, 0], bounds[0, 1]),
+                    np.random.uniform(bounds[1, 0], bounds[1, 1])])
 
-    best, score, points, scores, = local_hillclimber(objective, bounds, n_iterations, step_size, init)
-    all_bests[f'{round(w1,2)}_{round(w2,2)}'] = {'f1':best[0], 'f2':best[1], 'score':score}
+    best, score, points, scores, = local_hillclimber(
+        objective, bounds, n_iterations, step_size, init)
+    all_bests[f'{round(w1, 2)}_{round(w2, 2)}'] = {
+        'f1': best[0], 'f2': best[1], 'score': score}
     x0s.append(best[0])
     x1s.append(best[1])
     f1s.append(0.5 * np.power(best[0], 2) * best[1])
@@ -82,27 +89,29 @@ for i in range(num_points + 1):
         # Z = 0.1 * np.abs((0.5 * np.power(X, 2) * Y)) +
         # 0.9 * np.abs((np.power(X, 2) + 3 * X * Y) - 250)
         Z = objective(X, Y)
-        # print(Z)
+        print(Z)
 
         cp = ax.contour(X, Y, Z)
         ax.clabel(cp, inline=True, fontsize=10)
-        ax.set_title(f'Contour Plot for w1={round(w1,2)}, w2={round(w2,2)}', fontsize=20)
+        ax.set_title(
+            f'Contour Plot for w1={round(w1, 2)}, w2={round(w2, 2)}',
+            fontsize=20)
         ax.set_xlabel('x[0]')
         ax.set_ylabel('x[1]')
 
         for i in range(n_iterations):
             plt.plot(points[i][0], points[i][1], "o")
-        plt.savefig(f'pareto{round(w1,2)}_{round(w2,2)}.png')
+        plt.savefig(f'pareto{round(w1, 2)}_{round(w2, 2)}.png')
 
 plt.clf()
-random_x1s = random.rand(1000, 1) * (5.0)
-random_x2s = random.rand(1000, 1) * (10.0)
+random_x1s = random.rand(1000, 1) * 5.0
+random_x2s = random.rand(1000, 1) * 10.0
 plt.scatter(0.5 * np.power(random_x1s, 2) * random_x2s, np.power(random_x1s, 2) + 3 * random_x1s * random_x2s)
 plt.scatter(f1s, f2s)
 plt.xlabel('F1')
 plt.ylabel('F2')
 plt.title('Pareto Front')
-plt.savefig('task2/pareto_front2.png')
+plt.savefig('pareto_front2.png')
 # print('all', all_bests)
 
 plt.clf()
@@ -111,7 +120,6 @@ plt.scatter(x0s, x1s)
 plt.xlabel('X1')
 plt.ylabel('X2')
 plt.title('Efficient Set')
-plt.savefig('task2/eff_set.png')
+plt.savefig('eff_set.png')
 
-# print(pd.DataFrame.from_dict(all_bests, orient='index').to_latex())
-
+print(pd.DataFrame.from_dict(all_bests, orient='index').to_latex())

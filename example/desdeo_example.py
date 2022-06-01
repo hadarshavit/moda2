@@ -21,15 +21,12 @@ def f_1(x):
     r = x[:,0]
     h = x[:,1]
     area_cylinder = 2 * np.pi * r**2 + 2 * np.pi * r *h
-    #area_icecreamcone = np.pi * r * np.sqrt( h**2 + r**2)
     return area_cylinder
 
 def f_2(x):
     r = x[:, 0]
     h = x[:, 1]
     volume_cylinder= (np.pi) * r**2 * h
-    #volume_icecreamcone = 1.0 / 3.0 * (np.pi) * r ** 2 * h
-    #volume_filled_icecreamcone=1.0 /3.0 * (np.pi) * r**2 * h + 0*1/2*4.0 / 3.0 *np.pi *r**3
     return -volume_cylinder
 
 #def f_3(x):
@@ -86,7 +83,7 @@ import matplotlib.pyplot as plt
 from numpy import random
 X = random.rand(1000,1)*(10.0)
 Y = random.rand(1000,1)*(10.0)
-Z = [];
+Z = []
 
 len_data = 1000+len(solutions)
 labels = np.zeros(len_data)
