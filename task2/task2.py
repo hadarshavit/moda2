@@ -4,6 +4,7 @@ from numpy import asarray
 from numpy.random import rand
 import pandas as pd
 from numpy import random
+from tqdm import tqdm
 
 
 all_bests = {}
@@ -14,7 +15,7 @@ f2s = []
 
 plot_all_trajectories = False
 num_points = 10 if plot_all_trajectories else 1000
-for i in range(num_points + 1):
+for i in tqdm(range(num_points + 1)):
     w1 = i / num_points
     w2 = 1 - i / num_points
 
@@ -102,7 +103,7 @@ plt.scatter(f1s, f2s)
 plt.xlabel('F1')
 plt.ylabel('F2')
 plt.title('Pareto Front')
-plt.savefig('task2/pareto_front2.png')
+plt.savefig('pareto_front2.png')
 # print('all', all_bests)
 
 plt.clf()
@@ -111,7 +112,7 @@ plt.scatter(x0s, x1s)
 plt.xlabel('X1')
 plt.ylabel('X2')
 plt.title('Efficient Set')
-plt.savefig('task2/eff_set.png')
+plt.savefig('eff_set.png')
 
 # print(pd.DataFrame.from_dict(all_bests, orient='index').to_latex())
 
